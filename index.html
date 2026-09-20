@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -90,15 +91,19 @@
     }
 
     .store {
+      padding: 13px 0;
+      border-top: 1px solid #eee;
+    }
+
+    .store-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 11px 0;
-      border-top: 1px solid #eee;
     }
 
     .store-name {
       font-size: 14px;
+      font-weight: bold;
     }
 
     .price {
@@ -113,6 +118,23 @@
       border-radius: 8px;
       font-size: 10px;
       margin-right: 5px;
+    }
+
+    .address {
+      color: #777;
+      font-size: 12px;
+      margin-top: 7px;
+    }
+
+    .map-button {
+      display: inline-block;
+      margin-top: 9px;
+      padding: 7px 11px;
+      background: #eef6f5;
+      color: #12806b;
+      border-radius: 8px;
+      font-size: 11px;
+      text-decoration: none;
     }
 
     .not-found {
@@ -174,37 +196,108 @@
 
       {
         name: "روغن مایع ۱.۵ لیتری",
+
         stores: [
-          { name: "فروشگاه مرکزی", price: 185000 },
-          { name: "فروشگاه بهار", price: 175000 },
-          { name: "فروشگاه شهر", price: 180000 }
+
+          {
+            name: "فروشگاه مرکزی",
+            price: 185000,
+            address: "خیابان اصلی، پلاک ۲۵"
+          },
+
+          {
+            name: "فروشگاه بهار",
+            price: 175000,
+            address: "خیابان بهار، پلاک ۱۴"
+          },
+
+          {
+            name: "فروشگاه شهر",
+            price: 180000,
+            address: "بلوار آزادی، پلاک ۸"
+          }
+
         ]
       },
+
 
       {
         name: "برنج ایرانی ۱۰ کیلویی",
+
         stores: [
-          { name: "فروشگاه مرکزی", price: 1250000 },
-          { name: "فروشگاه بهار", price: 1190000 },
-          { name: "فروشگاه شهر", price: 1220000 }
+
+          {
+            name: "فروشگاه مرکزی",
+            price: 1250000,
+            address: "خیابان اصلی، پلاک ۲۵"
+          },
+
+          {
+            name: "فروشگاه بهار",
+            price: 1190000,
+            address: "خیابان بهار، پلاک ۱۴"
+          },
+
+          {
+            name: "فروشگاه شهر",
+            price: 1220000,
+            address: "بلوار آزادی، پلاک ۸"
+          }
+
         ]
       },
+
 
       {
         name: "شامپو ۴۰۰ میلی‌لیتری",
+
         stores: [
-          { name: "فروشگاه مرکزی", price: 165000 },
-          { name: "فروشگاه بهار", price: 149000 },
-          { name: "فروشگاه شهر", price: 158000 }
+
+          {
+            name: "فروشگاه مرکزی",
+            price: 165000,
+            address: "خیابان اصلی، پلاک ۲۵"
+          },
+
+          {
+            name: "فروشگاه بهار",
+            price: 149000,
+            address: "خیابان بهار، پلاک ۱۴"
+          },
+
+          {
+            name: "فروشگاه شهر",
+            price: 158000,
+            address: "بلوار آزادی، پلاک ۸"
+          }
+
         ]
       },
 
+
       {
         name: "شکر ۱ کیلویی",
+
         stores: [
-          { name: "فروشگاه مرکزی", price: 78000 },
-          { name: "فروشگاه بهار", price: 72000 },
-          { name: "فروشگاه شهر", price: 75000 }
+
+          {
+            name: "فروشگاه مرکزی",
+            price: 78000,
+            address: "خیابان اصلی، پلاک ۲۵"
+          },
+
+          {
+            name: "فروشگاه بهار",
+            price: 72000,
+            address: "خیابان بهار، پلاک ۱۴"
+          },
+
+          {
+            name: "فروشگاه شهر",
+            price: 75000,
+            address: "بلوار آزادی، پلاک ۸"
+          }
+
         ]
       }
 
@@ -212,15 +305,19 @@
 
 
     function formatPrice(price) {
+
       return price.toLocaleString("fa-IR") + " تومان";
+
     }
 
 
     function showProducts(list) {
 
-      const results = document.getElementById("results");
+      const results =
+        document.getElementById("results");
 
       results.innerHTML = "";
+
 
       if (list.length === 0) {
 
@@ -238,9 +335,12 @@
 
       list.forEach(product => {
 
-        const cheapestPrice = Math.min(
-          ...product.stores.map(store => store.price)
-        );
+        const cheapestPrice =
+          Math.min(
+            ...product.stores.map(
+              store => store.price
+            )
+          );
 
 
         let storesHTML = "";
@@ -253,24 +353,45 @@
 
 
           storesHTML += `
+
             <div class="store">
 
-              <span class="store-name">
-                ${store.name}
+              <div class="store-top">
 
-                ${
-                  isCheapest
-                  ? '<span class="cheap">ارزان‌ترین</span>'
-                  : ''
-                }
+                <span class="store-name">
 
-              </span>
+                  ${store.name}
 
-              <span class="price">
-                ${formatPrice(store.price)}
-              </span>
+                  ${
+                    isCheapest
+                    ? '<span class="cheap">ارزان‌ترین</span>'
+                    : ''
+                  }
+
+                </span>
+
+                <span class="price">
+                  ${formatPrice(store.price)}
+                </span>
+
+              </div>
+
+
+              <div class="address">
+                📍 ${store.address}
+              </div>
+
+
+              <a
+                class="map-button"
+                href="#"
+                onclick="alert('در مرحله بعد نقشه و مسیر واقعی این فروشگاه را اضافه می‌کنیم.')"
+              >
+                🗺️ نمایش روی نقشه
+              </a>
 
             </div>
+
           `;
 
         });
@@ -307,8 +428,8 @@
 
       if (text === "") {
 
-        document.getElementById("title").innerText =
-          "محصولات";
+        document.getElementById("title")
+          .innerText = "محصولات";
 
         showProducts(products);
 
@@ -316,13 +437,16 @@
       }
 
 
-      const results = products.filter(product =>
-        product.name.toLowerCase().includes(text)
-      );
+      const results =
+        products.filter(product =>
+          product.name
+            .toLowerCase()
+            .includes(text)
+        );
 
 
-      document.getElementById("title").innerText =
-        "نتیجه جستجو";
+      document.getElementById("title")
+        .innerText = "نتیجه جستجو";
 
 
       showProducts(results);
