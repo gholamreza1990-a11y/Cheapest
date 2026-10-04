@@ -146,6 +146,48 @@
       line-height: 2;
     }
 
+    .seller-section {
+      background: white;
+      padding: 18px;
+      margin: 30px 0 10px;
+      border-radius: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
+
+    .seller-section h2 {
+      font-size: 18px;
+      margin-bottom: 14px;
+      color: #12806b;
+    }
+
+    .seller-section input {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 14px;
+      margin-bottom: 10px;
+      outline: none;
+    }
+
+    .seller-section button {
+      width: 100%;
+      border: none;
+      background: #16a085;
+      color: white;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .seller-message {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #12806b;
+      text-align: center;
+    }
+
     .footer {
       text-align: center;
       color: #999;
@@ -182,6 +224,19 @@
     </h2>
 
     <div id="results"></div>
+
+    <div class="seller-section">
+      <h2>🏪 ثبت قیمت توسط فروشندگان</h2>
+
+      <input type="text" id="sellerProduct" placeholder="نام محصول">
+      <input type="text" id="sellerStore" placeholder="نام فروشگاه">
+      <input type="number" id="sellerPrice" placeholder="قیمت (تومان)" min="0">
+      <input type="text" id="sellerAddress" placeholder="آدرس فروشگاه">
+
+      <button onclick="addSellerPrice()">ثبت قیمت</button>
+
+      <div class="seller-message" id="sellerMessage"></div>
+    </div>
 
   </div>
 
@@ -303,6 +358,95 @@
 
     ];
 
+
+    function loadSellerProducts() {
+      try {
+        const saved = JSON.parse(
+          localStorage.getItem("sellerProducts") || "[]"
+        );
+        return saved;
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveSellerProducts(list) {
+      localStorage.setItem(
+        "sellerProducts", JSON.stringify(list)
+      );
+    }
+
+    function getAllProducts() {
+      return products.concat(loadSellerProducts());
+    }
+
+    function addSellerPrice() {
+
+      const name =
+        document.getElementById("sellerProduct")
+          .value.trim();
+
+      const storeName =
+        document.getElementById("sellerStore")
+          .value.trim();
+
+      const price = parseInt(
+        document.getElementById("sellerPrice").value, 10
+      );
+
+      const address =
+        document.getElementById("sellerAddress")
+          .value.trim();
+
+      const message =
+        document.getElementById("sellerMessage");
+
+      if (!name || !storeName || !price || price <= 0 || !address) {
+        message.style.color = "#c0392b";
+        message.innerText =
+          "لطفاً همه فیلدها را درست پر کنید.";
+        return;
+      }
+
+      const sellerProducts = loadSellerProducts();
+
+      const existing = sellerProducts.find(
+        p => p.name === name
+      );
+
+      if (existing) {
+        const storeExists = existing.stores.find(
+          s => s.name === storeName
+        );
+        if (storeExists) {
+          storeExists.price = price;
+          storeExists.address = address;
+        } else {
+          existing.stores.push({
+            name: storeName, price, address
+          });
+        }
+      } else {
+        sellerProducts.push({
+          name,
+          stores: [{ name: storeName, price, address }]
+        });
+      }
+
+      saveSellerProducts(sellerProducts);
+
+      document.getElementById("sellerProduct").value = "";
+      document.getElementById("sellerStore").value = "";
+      document.getElementById("sellerPrice").value = "";
+      document.getElementById("sellerAddress").value = "";
+
+      message.style.color = "#12806b";
+      message.innerText = "قیمت با موفقیت ثبت شد ✅";
+
+      document.getElementById("title").innerText = "محصولات";
+      showProducts(getAllProducts());
+
+    }
 
     function formatPrice(price) {
 
@@ -431,14 +575,14 @@
         document.getElementById("title")
           .innerText = "محصولات";
 
-        showProducts(products);
+        showProducts(getAllProducts());
 
         return;
       }
 
 
       const results =
-        products.filter(product =>
+        getAllProducts().filter(product =>
           product.name
             .toLowerCase()
             .includes(text)
@@ -454,7 +598,7 @@
     }
 
 
-    showProducts(products);
+    showProducts(getAllProducts());
 
   </script>
 
